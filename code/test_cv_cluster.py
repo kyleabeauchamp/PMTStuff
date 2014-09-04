@@ -16,8 +16,8 @@ test = trajectories[1::2]
 
 featurizer = sklearn.externals.joblib.load("./featurizer-%d.job" % n_choose)
 
-n_components_list = [5]
-n_states_list = [10, 20, 30, 40, 50, 75, 100, 125, 150, 175]
+n_components_list = [8]
+n_states_list = range(5, 60)
 train_scores = np.zeros((len(n_components_list), len(n_states_list)))
 test_scores = np.zeros((len(n_components_list), len(n_states_list)))
 
@@ -41,5 +41,6 @@ xlabel("n_states")
 ylabel("Score")
 title("tICA KMeans SETD2")
 legend(loc=0)
+ylim(4, 10)
 savefig("/home/kyleb/src/kyleabeauchamp/MixtapeTalk/figures/SETD2_tICA_KMeans.png")
 

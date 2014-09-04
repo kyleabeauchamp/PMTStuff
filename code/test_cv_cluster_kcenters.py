@@ -13,16 +13,14 @@ trj0, trajectories, filenames = load_trajectories(stride=stride)
 train = trajectories[0::2]
 test = trajectories[1::2]
 
-#n_states_list = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 80, 90, 100, 120, 140, 160, 180, 200, 250, 300, 350, 400]
-
-n_states_list = range(5, 50)
+n_states_list = range(5, 60)
 train_scores = np.zeros(len(n_states_list))
 test_scores = np.zeros(len(n_states_list))
 
 for j, n_states in enumerate(n_states_list):
-    print(n_components, n_states)
+    print(n_states)
     subsampler = mixtape.utils.Subsampler(lag_time=lag_time)
-    msm = mixtape.markovstatemodel.MarkovStateModel(n_timescales=n_components)
+    msm = mixtape.markovstatemodel.MarkovStateModel()
     cluster = mixtape.cluster.KCenters(n_states, metric=md.rmsd)
     pipeline = sklearn.pipeline.Pipeline([("subsampler", subsampler), ("cluster", cluster), ("msm", msm)])
     pipeline.fit(train)
@@ -33,10 +31,10 @@ for j, n_states in enumerate(n_states_list):
 plot(n_states_list, train_scores, 'o', label="train")
 plot(n_states_list, test_scores, 'o', label="test")
 
-
 xlabel("n_states")
 ylabel("Score")
 title("KCenters SETD2")
 legend(loc=0)
+ylim(4, 10)
 savefig("/home/kyleb/src/kyleabeauchamp/MixtapeTalk/figures/SETD2_kcenters.png")
 
