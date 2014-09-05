@@ -7,7 +7,7 @@ import sklearn.pipeline, sklearn.externals.joblib
 import mixtape.utils
 
 n_iter = 1000
-n_choose = 100
+n_choose = 50
 stride = 1
 lag_time = 1
 n_components = 3
@@ -22,7 +22,7 @@ else:
     trajectories = [trajectories[0][0:trajectories[0].n_frames/2]]
 
 try:
-    featurizer = sklearn.externals.joblib.load("./featurizer-%d.job" % n_choose)
+    featurizer = sklearn.externals.joblib.load("./featurizer-%d-%d.job" % (n_components, n_choose))
 except:
     featurizer = mixtape.subset_featurizer.guess_featurizers(trajectories[0][0], n_choose)
 
@@ -33,4 +33,4 @@ for i in range(100):
     print("i = %d" % i)
     featurizer = tica_optimizer.optimize(n_iter, trajectories)
     print("saving %d" % i)
-    sklearn.externals.joblib.dump(tica_optimizer.featurizer, "./featurizer-%d.job" % n_choose, compress=True)
+    sklearn.externals.joblib.dump(tica_optimizer.featurizer, "./featurizer-%d-%d.job" % (n_components, n_choose), compress=True)
